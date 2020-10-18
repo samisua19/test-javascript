@@ -9,40 +9,37 @@ const btnEqual = document.querySelectorAll('.btn-equal');
 
 let status = false;
 let op = '';
+let num1 = '';
+let num2 = '';
 let result;
 
 btnNumber.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        if (status) {
-            if (op == '+') {
-                result =result + parseFloat(e.target.dataset.number);
-                status = false;
-                textInput['Text-operation'].value = result;
-                textInput['Text-input'].value += e.target.dataset.number;
-
-            } else if (op == '-') {
-                result =result - parseFloat(e.target.dataset.number);
-                status = false;
-                textInput['Text-operation'].value = result;
-                textInput['Text-input'].value += e.target.dataset.number;
-            } else if (op == '*') {
-
-                result =result * parseFloat(e.target.dataset.number);
-                status = false;
-                textInput['Text-operation'].value = result;
-                textInput['Text-input'].value += e.target.dataset.number;
-            } else {
-                result =result / parseFloat(e.target.dataset.number);
-                status = false;
-                textInput['Text-operation'].value = result;
-                textInput['Text-input'].value += e.target.dataset.number;
-            }
-        } else {
+    btn.addEventListener('click',  (e) => {
             textInput['Text-input'].value += e.target.dataset.number;
-            result = parseFloat(textInput['Text-input'].value);
+        if (!status) {
+            num1 += e.target.dataset.number;
+        } else {
+            num2 += e.target.dataset.number;
         }
     })
 })
+
+function resultOP (op, num1,num2)  {
+    switch (op){
+        case '+':
+            result = num1+num2;
+            return result;
+        case '-':
+            result = num1-num2;
+            return result;
+        case '*':
+            result = num1*num2;
+            return result;
+        case '/' :
+            result = num1 / num2;
+            return result;
+    }
+}
 
 btnOperation.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -70,10 +67,12 @@ btnDelete.forEach(btn => {
     })
 })
 
-btnDelete.forEach(btn => {
+btnEqual.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        let string = textInput['Text-input'].value;
-        textInput['Text-input'].value = string.substring(0, string.length - 1);
+        result = resultOP(op,parseFloat(num1),parseFloat(num2));
+        textInput['Text-operation'].value = result;
+        num1 = result;
+        num2 = '';
     })
 })
 
